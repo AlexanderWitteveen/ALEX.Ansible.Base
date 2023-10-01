@@ -8,6 +8,9 @@
     - /etc/ansible/inventory/vars.yml
 
   tasks:
+    - ansible.builtin.include_role: # knownproxmoxhost
+        name: alex.base.knownproxmoxhost
+
     - ansible.builtin.include_role: # knownoshost
         name: alex.base.knownoshost
 
