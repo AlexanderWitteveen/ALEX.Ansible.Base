@@ -1,0 +1,15 @@
+---
+
+- name: "Playbook: Test Roles"
+  hosts: "{{ args_host }}"
+  gather_facts: false
+
+  vars_files:
+    - /etc/ansible/inventory/vars.yml
+
+  tasks:
+    - ansible.builtin.include_role: # knownoshost
+        name: alex.base.knownoshost
+
+    - ansible.builtin.include_role: # waitstarted
+        name: alex.base.waitstarted
