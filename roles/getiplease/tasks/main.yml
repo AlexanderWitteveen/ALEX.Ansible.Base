@@ -1,0 +1,56 @@
+---
+
+- name: Get IP Leases
+  shell: |
+    {{ role_path }}/scripts/getiplease.sh "{{ prop_pfsense.ipaddress }}" "{{ prop_pfsense.username }}" "{{ prop_pfsense.password }}"
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  register: expectresult
+  changed_when: false
+  failed_when: '("Error" in expectresult.stdout) or ("Host key verification failed." in expectresult.stdout)'
+  connection: local
+  become: false
+
+#- name: Echo IP Leases
+#  shell: |
+#    s=$(echo '{{ expectresult.stdout }}' | tr -d '\r\n')
+#    echo "$s"
+#  args:
+#    executable: /bin/bash
+#  changed_when: false
+#  connection: local
+#  become: false
+
+- name: Filter IP Leases
+  shell: |
+    s1=$(echo '{{ expectresult.stdout }}' | tr -d '\r\n')
+    s2=$( echo ${s1//lease/%} )
+    IFS='%' read -a array <<< "$s2"
+    for item in "${array[@]}"
+    do
+      if [[ $item == *"{{ prop_mac }}"* ]]; then
+        echo "$item" | awk '{print $1}'
+      fi
+    done
+  args:
+    executable: /bin/bash
+  register: filterresult
+  changed_when: false
+  connection: local
+  become: false
+
+- name: Setting host facts using complex arguments
+  ansible.builtin.set_fact:
+    prop_dhcp_ipaddress: "{{ filterresult.stdout }}"
+
+- name: Test
+  shell: |
+    echo {{ prop_dhcp_ipaddress }}
+  args:
+    executable: /bin/bash
+  changed_when: false
+  connection: local
+  become: false

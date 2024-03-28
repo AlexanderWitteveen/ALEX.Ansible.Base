@@ -1,0 +1,30 @@
+#!/usr/bin/expect -f
+
+set ipaddress [lindex $argv 0]
+set username [lindex $argv 1]
+set password [lindex $argv 2]
+
+set timeout 30
+
+spawn ssh -o StrictHostKeyChecking=no $username@$ipaddress
+
+expect {
+    "Password for" {
+        send -- "$password\r"
+        expect {
+            "RELEASE" {
+                expect "$username"
+
+                send -- "egrep \"lease|client-hostname|hardware ethernet|binding state|\}\" /var/dhcpd/var/db/dhcpd.leases\r"
+
+                expect "$username"
+
+                send -- "exit\r"
+
+                expect eof
+
+                send_user "**** Changed: Finished Expect: No expire\n"
+            }
+        }
+    }
+}
