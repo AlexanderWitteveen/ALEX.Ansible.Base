@@ -11,5 +11,9 @@
   register: result
   changed_when: '"Changed" in result.stdout'
   failed_when: '"Error" in result.stdout'
+  vars:
+    ansible_python_interpreter: "{{ prop_local_python }}"
   connection: local
   become: false
+
+

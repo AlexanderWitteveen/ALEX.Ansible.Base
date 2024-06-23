@@ -7,6 +7,7 @@
     search_regex: OpenSSH
     delay: 1
     timeout: 300
+  vars:
+    ansible_python_interpreter: "{{ prop_python_path }}"
   connection: local
   become: false
-

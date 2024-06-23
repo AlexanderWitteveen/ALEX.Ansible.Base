@@ -13,6 +13,8 @@
   failed_when: '("Error" in expectresult.stdout) or ("Host key verification failed." in expectresult.stdout)'
   connection: local
   become: false
+  vars:
+    ansible_python_interpreter: "{{ prop_python_path }}"
 
 #- name: Echo IP Leases
 #  shell: |
@@ -41,6 +43,8 @@
   changed_when: false
   connection: local
   become: false
+  vars:
+    ansible_python_interpreter: "{{ prop_python_path }}"
 
 - name: Setting host facts using complex arguments
   ansible.builtin.set_fact:
@@ -54,3 +58,9 @@
   changed_when: false
   connection: local
   become: false
+  vars:
+    ansible_python_interpreter: "{{ prop_python_path }}"
+
+
+
+

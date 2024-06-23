@@ -1,0 +1,40 @@
+#!/usr/bin/expect -f
+
+set ipaddress [lindex $argv 0]
+set username [lindex $argv 1]
+set path [lindex $argv 2]
+
+set timeout 30
+
+spawn ssh $ipaddress
+expect {
+  "$username@*" {
+    send -- "sudo su\r"
+
+    expect "root@*"
+    send -- "test -f $path \r"
+
+    send -- "echo A$?A\r"
+
+    expect {
+      "A1A" {
+        send_user "**** FALSE\n"
+        send -- "exit\r"
+
+      }
+      "A0A" {
+        send_user "**** TRUE\n"
+        send -- "exit\r"
+
+      }
+    }
+
+    expect "root@*"
+    send -- "exit\r"
+
+    expect "$username@*"
+    send -- "exit\r"
+
+    expect eof
+  }
+}

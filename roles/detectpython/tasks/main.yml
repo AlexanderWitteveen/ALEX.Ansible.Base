@@ -1,0 +1,31 @@
+---
+
+- name: Detect Python on os
+  shell: |
+    {% for path in prop_python_paths %}
+      result=$( {{ role_path }}/scripts/test.python.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ path }}" )
+      if [[ "$?" != "0" ]]; then 
+        echo "Error executing script"
+        exit
+      fi
+      if [[ "$result" != "" ]]; then
+        echo $result
+        exit
+      fi
+    {% endfor %}
+  args:
+    executable: /bin/bash
+  register: expectresult
+  changed_when: 'expectresult.stdout != ""'
+  failed_when: '"Error" in expectresult.stdout'
+  vars:
+    ansible_python_interpreter: "{{ prop_local_python }}"
+  connection: local
+  become: false
+
+- name: set os python path
+  ansible.builtin.set_fact:
+    prop_python_path: "{{ expectresult.stdout }}"
+    ansible_python_interpreter: "{{ expectresult.stdout }}"
+  failed_when: '("Error" in expectresult.stdout) or (expectresult.stdout == "")'
+
