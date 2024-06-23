@@ -12,6 +12,6 @@
   changed_when: '"Changed" in result.stdout'
   failed_when: '"Error" in result.stdout'
   vars:
-    ansible_python_interpreter: "{{ prop_local_python }}"
+    ansible_python_interpreter: "{{ prop_local_python_path }}"
   connection: local
   become: false
