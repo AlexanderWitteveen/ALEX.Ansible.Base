@@ -14,7 +14,7 @@
   connection: local
   become: false
   vars:
-    ansible_python_interpreter: "{{ prop_python_path }}"
+    ansible_python_interpreter: "{{ prop_local_python_path }}"
 
 #- name: Echo IP Leases
 #  shell: |
@@ -44,7 +44,7 @@
   connection: local
   become: false
   vars:
-    ansible_python_interpreter: "{{ prop_python_path }}"
+    ansible_python_interpreter: "{{ prop_local_python_path }}"
 
 - name: Setting host facts using complex arguments
   ansible.builtin.set_fact:
@@ -59,7 +59,7 @@
   connection: local
   become: false
   vars:
-    ansible_python_interpreter: "{{ prop_python_path }}"
+    ansible_python_interpreter: "{{ prop_local_python_path }}"
 
 
 
