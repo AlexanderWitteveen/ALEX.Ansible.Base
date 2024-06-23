@@ -19,7 +19,7 @@
   changed_when: 'expectresult.stdout != ""'
   failed_when: '"Error" in expectresult.stdout'
   vars:
-    ansible_python_interpreter: "{{ prop_local_python }}"
+    ansible_python_interpreter: "{{ prop_local_python_path }}"
   connection: local
   become: false
 
