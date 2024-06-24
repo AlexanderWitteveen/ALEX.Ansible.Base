@@ -17,7 +17,7 @@
     executable: /bin/bash
   register: expectresult
   changed_when: 'expectresult.stdout != ""'
-  failed_when: '"Error" in expectresult.stdout'
+  failed_when: '("Error" in expectresult.stdout) or (expectresult.stdout == "")'
   vars:
     ansible_python_interpreter: "{{ prop_local_python_path }}"
   connection: local
@@ -25,7 +25,10 @@
 
 - name: set os python path
   ansible.builtin.set_fact:
-    prop_local_python_path: "{{ expectresult.stdout }}"
+    prop_python_path: "{{ expectresult.stdout }}"
     ansible_python_interpreter: "{{ expectresult.stdout }}"
-  failed_when: '("Error" in expectresult.stdout) or (expectresult.stdout == "")'
+  vars:
+    ansible_python_interpreter: "{{ prop_local_python_path }}"
+  connection: local
+  become: false
 
