@@ -26,7 +26,6 @@
 - name: set os python path
   ansible.builtin.set_fact:
     prop_python_path: "{{ expectresult.stdout }}"
-    ansible_python_interpreter: "{{ expectresult.stdout }}"
   vars:
     ansible_python_interpreter: "{{ prop_local_python_path }}"
   connection: local
