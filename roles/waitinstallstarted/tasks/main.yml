@@ -10,8 +10,3 @@
   connection: local
   become: false
 
-- name: Pause
-  ansible.builtin.pause:
-    seconds: 20
-  connection: local
-  become: false
