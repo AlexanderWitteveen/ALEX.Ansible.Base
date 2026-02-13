@@ -13,14 +13,32 @@
 - ansible.builtin.include_role: # knownoshost
     name: alex.base.knownoshost
 
-- name: Wait until {{ prop_ipaddress }} SSH started
-  wait_for_connection:
-    connect_timeout: 20
-    sleep: 5
-    delay: 5
-    timeout: 300
-  vars:
-    ansible_connection: ssh
-    ansible_host: "{{ prop_ipaddress }}"
-  become: true
+- name: Test logon
+  shell: |
+    {{ role_path }}/scripts/logon.sh "{{ prop_ipaddress }}" "{{ args_ssh_username }}" "{{ args_ssh_password }}" > /dev/null
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  register: expectresult
+  failed_when: '("Error" in expectresult.stdout)'
+  connection: local
+  become: false
+
+
+
+# - name: Wait until {{ prop_ipaddress }} SSH started
+#   wait_for_connection:
+#     connect_timeout: 20
+#     sleep: 5
+#     delay: 5
+#     timeout: 60
+#   failed_when: false
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_ssh_user: "{{ args_ssh_username | default(prop_admin_username) }}"
+#     ansible_ssh_password: "{{ args_ssh_password | default(prop_admin_password) }}"
+#   become: false
 

@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+
+set ipaddress [lindex $argv 0]
+set username [lindex $argv 1]
+set password [lindex $argv 2]
+
+set timeout 30
+
+spawn ssh -o StrictHostKeyChecking=no $username@$ipaddress
+
+expect {
+    "password:" {
+        send -- "$password\r"
+        expect {
+            "Linux" {
+                expect "$username@*"
+                #send -- "exit\r"
+
+                expect eof
+
+                send_user "**** Finished Expect: user logged on\n"
+            }
+            "Permission denied" {
+                send -- "\x03"
+                send_user "**** Error: Finished Expect: permission denied\n"
+            }
+        }
+    }
+}
