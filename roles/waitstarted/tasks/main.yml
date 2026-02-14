@@ -13,16 +13,30 @@
 - ansible.builtin.include_role: # knownoshost
     name: alex.base.knownoshost
 
-- name: Test logon
+- name: Test admin user logon
   shell: |
-    {{ role_path }}/scripts/logon.sh "{{ prop_ipaddress }}" "{{ args_ssh_username }}" "{{ args_ssh_password }}" > /dev/null
+    {{ role_path }}/scripts/logon.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}" > /dev/null
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
   args:
     executable: /bin/bash
-  register: expectresult
-  failed_when: '("Error" in expectresult.stdout)'
+  register: expectresult1
+  failed_when: false
+  connection: local
+  become: false
+  
+- name: Test install user logon
+  shell: |
+    {{ role_path }}/scripts/logon.sh "{{ prop_ipaddress }}" "{{ prop_install_username }}" "{{ prop_install_password }}" > /dev/null
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  when: '("Error" in expectresult1.stdout)'
+  register: expectresult2
+  failed_when: '("Error" in expectresult2.stdout)'
   connection: local
   become: false
 
@@ -34,6 +48,7 @@
 #     sleep: 5
 #     delay: 5
 #     timeout: 60
+#   when: args_ssh_username == "null"
 #   failed_when: false
 #   vars:
 #     ansible_connection: ssh
