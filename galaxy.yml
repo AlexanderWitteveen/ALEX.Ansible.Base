@@ -2,7 +2,7 @@ namespace: alex
 
 name: base
 
-version: 0.1.23
+version: 0.1.24
 ## TODO Autiomate using the build command
 
 readme: README.md
