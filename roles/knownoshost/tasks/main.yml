@@ -12,4 +12,4 @@
   changed_when: '"Changed" in result.stdout'
   failed_when: '"Error" in result.stdout'
   connection: local
-  become: true
+  become: false

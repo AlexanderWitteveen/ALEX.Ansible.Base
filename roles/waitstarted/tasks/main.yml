@@ -8,7 +8,7 @@
     delay: 1
     timeout: 300
   connection: local
-  become: true
+  become: false
 
 - ansible.builtin.include_role: # knownoshost
     name: alex.base.knownoshost
@@ -24,7 +24,7 @@
   register: expectresult1
   failed_when: false
   connection: local
-  become: true
+  become: false
   
 - name: Test install user logon
   shell: |
@@ -38,7 +38,7 @@
   register: expectresult2
   failed_when: '("Error" in expectresult2.stdout)'
   connection: local
-  become: true
+  become: false
 
 
 
@@ -55,5 +55,5 @@
 #     ansible_host: "{{ prop_ipaddress }}"
 #     ansible_ssh_user: "{{ args_ssh_username | default(prop_admin_username) }}"
 #     ansible_ssh_password: "{{ args_ssh_password | default(prop_admin_password) }}"
-#   become: true
+#   become: false
 
