@@ -1,9 +1,9 @@
 ---
 
-- name: Wait until {{ prop_ipaddress }} started 
+- name: Wait until {{ prop_host.ipaddress }} started 
   wait_for:
     port: 22
-    host: '{{ prop_ipaddress }}'
+    host: '{{ prop_host.ipaddress }}'
     search_regex: OpenSSH
     delay: 1
     timeout: 300
@@ -15,7 +15,7 @@
 
 - name: Test admin user logon
   shell: |
-    {{ role_path }}/scripts/logon.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}" > /dev/null
+    {{ role_path }}/scripts/logon.sh "{{ prop_host.ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}" > /dev/null
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
@@ -28,7 +28,7 @@
   
 - name: Test install user logon
   shell: |
-    {{ role_path }}/scripts/logon.sh "{{ prop_ipaddress }}" "{{ prop_install_username }}" "{{ prop_install_password }}" > /dev/null
+    {{ role_path }}/scripts/logon.sh "{{ prop_host.ipaddress }}" "{{ prop_install_username }}" "{{ prop_install_password }}" > /dev/null
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
@@ -42,7 +42,7 @@
 
 
 
-# - name: Wait until {{ prop_ipaddress }} SSH started
+# - name: Wait until {{ prop_host.ipaddress }} SSH started
 #   wait_for_connection:
 #     connect_timeout: 20
 #     sleep: 5
@@ -52,7 +52,7 @@
 #   failed_when: false
 #   vars:
 #     ansible_connection: ssh
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #     ansible_ssh_user: "{{ args_ssh_username | default(prop_admin_username) }}"
 #     ansible_ssh_password: "{{ args_ssh_password | default(prop_admin_password) }}"
 #   become: false

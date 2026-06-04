@@ -14,4 +14,4 @@ else
   echo $keystring >> "$localuserssh/known_hosts"
 fi
 
-
+exit 0

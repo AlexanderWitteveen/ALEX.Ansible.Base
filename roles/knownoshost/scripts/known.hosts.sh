@@ -24,3 +24,5 @@ else
 fi
 
 rm "$localuserssh/known_hosts.old" 2>/dev/null
+
+exit 0
