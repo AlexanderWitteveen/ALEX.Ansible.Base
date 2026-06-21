@@ -2,6 +2,7 @@
 
 - name: Update Known Hosts
   shell: |
+    # echo "Updating known hosts for {{ prop_proxmox.host }}"
     {{ role_path }}/scripts/known.hosts.sh "{{ prop_proxmox.host }}" "{{ prop_local_user_ssh }}"
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
