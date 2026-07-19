@@ -1,0 +1,15 @@
+---
+
+- name: Template expect file
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0644'
+  loop:
+    - src: config.j2
+      dest: "~/.ssh/config.d/{{prop_host.hostname}}.config"
+  vars:
+    ansible_connection: local
+  become: true

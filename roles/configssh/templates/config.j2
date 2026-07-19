@@ -1,0 +1,5 @@
+host {{ prop_host.ipaddress }} {{ prop_host.hostname }}
+    user "{{ prop_ssh.user }}"
+    identityfile "{{ prop_ssh.identityfile }}"
+    HostKeyAlgorithms "{{ prop_ssh.HostKeyAlgorithms }}"
+
